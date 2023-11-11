@@ -26,7 +26,12 @@ app.get("/api/hello", function (req, res) {
 
 app.get("/api/:date?", (req, res) => {
   try {
-    console.log(isNaN(req.params.date))
+
+    if (!req.params.date) {
+      const now = Date.now();
+      const nowDate = new Date(now);
+      return res.json({ unix: nowDate.getTime(), utc: nowDate.toUTCString() })
+    }
     const date =
       new Date(isNaN(req.params.date) ?
         req.params.date :
